@@ -1,0 +1,6 @@
+# 1. start mongodb
+> mongod
+
+# 2. test mongodb
+> mongo < test_db.js
+> mongo < server_stored_functions.js

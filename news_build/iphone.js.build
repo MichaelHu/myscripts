@@ -1,0 +1,105 @@
+// namespace
+;/*{include file="../product/js/app.js"}*/
+
+;// utils
+;/*{include file="../product/js/utils/app.utils.motions.js"}*/
+;/*{include file="../product/js/utils/app.utils.helper.js"}*/
+
+;// js base
+;/*{include file="../product/js/base/app.router.js"}*/
+;/*{include file="../product/js/base/app.model.js"}*/
+;/*{include file="../product/js/base/app.collection.js"}*/
+;/*{include file="../product/js/base/app.controller.js"}*/
+;/*{include file="../product/js/base/app.view.js"}*/
+
+// app routers
+;/*{include file="../product/js/app.router.news.js"}*/
+
+;// page index
+;/*{include file="../product/js/pages/index/app.model.index.js"}*/
+;/*{include file="../product/js/pages/index/app.model.index.cms.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.carousel.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.carousel.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.header.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.header.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.navigator.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.navigator.js"}*/
+;/*{include file="../product/js/pages/index/app.model.index.ad.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.ad.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.ad.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.main.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.main.js"}*/
+;/*{include file="../product/js/pages/index/app.model.index.list.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.list.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.list.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.topADBanner.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.topADBanner.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.btmADBanner.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.btmADBanner.js"}*/
+;/*{include file="../product/js/pages/index/app.controller.index.overlay.js"}*/
+;/*{include file="../product/js/pages/index/app.view.index.overlay.js"}*/
+
+;// page article
+;/*{include file="../product/js/pages/article/app.controller.page.js"}*/
+;/*{include file="../product/js/pages/article/app.controller.page.header.js"}*/
+;/*{include file="../product/js/pages/article/app.controller.page.article.js"}*/
+;/*{include file="../product/js/pages/article/app.view.page.js"}*/
+;/*{include file="../product/js/pages/article/app.view.page.header.js"}*/
+;/*{include file="../product/js/pages/article/app.view.page.article.js"}*/
+;/*{include file="../product/js/pages/article/app.model.page.js"}*/
+;/*{include file="../product/js/pages/article/app.model.page.article.js"}*/
+;/*{include file="../product/js/pages/article/app.model.page.cms.js"}*/
+;/*{include file="../product/js/pages/article/app.controller.page.btmADBanner.js"}*/
+;/*{include file="../product/js/pages/article/app.view.page.btmADBanner.js"}*/
+
+;// page search
+;/*{include file="../product/js/pages/search/app.controller.search.js"}*/
+;/*{include file="../product/js/pages/search/app.controller.search.list.js"}*/
+;/*{include file="../product/js/pages/search/app.controller.search.header.js"}*/
+;/*{include file="../product/js/pages/search/app.view.search.js"}*/
+;/*{include file="../product/js/pages/search/app.view.search.list.js"}*/
+;/*{include file="../product/js/pages/search/app.view.search.header.js"}*/
+;/*{include file="../product/js/pages/search/app.model.search.js"}*/
+;/*{include file="../product/js/pages/search/app.model.search.list.js"}*/
+;/*{include file="../product/js/pages/search/app.model.search.cms.js"}*/
+;/*{include file="../product/js/pages/search/app.controller.search.topADBanner.js"}*/
+;/*{include file="../product/js/pages/search/app.view.search.topADBanner.js"}*/
+
+;// page product
+;/*{include file="../product/js/pages/product/app.controller.product.js"}*/
+;/*{include file="../product/js/pages/product/app.controller.product.header.js"}*/
+;/*{include file="../product/js/pages/product/app.controller.product.list.js"}*/
+;/*{include file="../product/js/pages/product/app.view.product.js"}*/
+;/*{include file="../product/js/pages/product/app.view.product.header.js"}*/
+;/*{include file="../product/js/pages/product/app.view.product.list.js"}*/
+ 
+;// page feedback
+;/*{include file="../product/js/pages/feedback/app.controller.feedback.js"}*/
+;/*{include file="../product/js/pages/feedback/app.controller.feedback.header.js"}*/
+;/*{include file="../product/js/pages/feedback/app.controller.feedback.list.js"}*/
+;/*{include file="../product/js/pages/feedback/app.view.feedback.js"}*/
+;/*{include file="../product/js/pages/feedback/app.view.feedback.header.js"}*/
+;/*{include file="../product/js/pages/feedback/app.view.feedback.list.js"}*/
+
+;// page searchbox
+;/*{include file="../product/js/pages/searchbox/app.controller.searchbox.js"}*/
+;/*{include file="../product/js/pages/searchbox/app.view.searchbox.js"}*/
+;/*{include file="../product/js/pages/searchbox/app.model.searchbox.js"}*/
+;/*{include file="../product/js/pages/searchbox/app.controller.searchbox.header.js"}*/
+;/*{include file="../product/js/pages/searchbox/app.view.searchbox.header.js"}*/
+
+;// page image
+;/*{include file="../product/js/pages/image/app.controller.image.js"}*/
+;/*{include file="../product/js/pages/image/app.controller.image.header.js"}*/
+;/*{include file="../product/js/pages/image/app.controller.image.list.js"}*/
+;/*{include file="../product/js/pages/image/app.view.image.js"}*/
+;/*{include file="../product/js/pages/image/app.view.image.header.js"}*/
+;/*{include file="../product/js/pages/image/app.view.image.list.js"}*/
+
+;// configure
+;/*{include file="../product/js/app.conf.js"}*/
+
+;/*{include file="../product/js/app.init.js"}*/
+

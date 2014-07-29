@@ -1,0 +1,14 @@
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# export PS1='\u@\h:\W\$ '
+export PS1='\u@local:\W\$ '
+
+PATH=$PATH:~/bin
+PATH=$PATH:~/softwares/lrzsz-0.12.20/bin
+PATH=$PATH:/usr/local/share/npm/bin
+
+export PATH
+

@@ -1,0 +1,146 @@
+<project name="webappvideo" default="concatAndroidJS" basedir=".">
+	<description>
+		simple example build file
+	</description>
+	<!-- set global properties for this build -->
+	<property name="common" location="main\common" />
+	<property name="srcJS" location="main\product\js" />
+	<property name="srcCSS" location="main\product\css" />
+	<property name="buildJS" location="..\static\news\webapp_lite\js" />
+	<property name="buildCSS" location="..\static\news\webapp_lite\css" />
+
+	<target name="concatAndroidJS" description="合并AndroidJS">
+		<concat destfile="${buildJS}/iphone.js">
+			<fileset file="${srcJS}/app.js" />	
+
+			<!-- utils-->
+			<fileset file="${srcJS}/utils/app.utils.motions.js" />	
+			<fileset file="${srcJS}/utils/app.utils.helper.js" />	
+
+			<!-- js base-->
+			<fileset file="${srcJS}/base/app.router.js" />	
+			<fileset file="${srcJS}/base/app.model.js" />	
+			<fileset file="${srcJS}/base/app.collection.js" />	
+			<fileset file="${srcJS}/base/app.controller.js" />	
+			<fileset file="${srcJS}/base/app.view.js" />	
+
+			<!-- app routers-->
+			<fileset file="${srcJS}/app.router.news.js" />	
+
+			<!-- page index-->
+			<fileset file="${srcJS}/pages/index/app.model.index.js" />	
+			<fileset file="${srcJS}/pages/index/app.model.index.cms.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.carousel.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.carousel.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.header.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.header.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.navigator.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.navigator.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.ad.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.ad.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.main.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.main.js" />	
+			<fileset file="${srcJS}/pages/index/app.model.index.list.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.list.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.list.js" />	
+			<fileset file="${srcJS}/pages/index/app.controller.index.topADBanner.js" />	
+			<fileset file="${srcJS}/pages/index/app.view.index.topADBanner.js" />	
+
+			<!-- page article-->
+			<fileset file="${srcJS}/pages/article/app.controller.page.js" />	
+			<fileset file="${srcJS}/pages/article/app.controller.page.header.js" />	
+			<fileset file="${srcJS}/pages/article/app.controller.page.article.js" />	
+			<fileset file="${srcJS}/pages/article/app.view.page.js" />	
+			<fileset file="${srcJS}/pages/article/app.view.page.header.js" />	
+			<fileset file="${srcJS}/pages/article/app.view.page.article.js" />	
+			<fileset file="${srcJS}/pages/article/app.model.page.js" />	
+			<fileset file="${srcJS}/pages/article/app.model.page.article.js" />	
+			<fileset file="${srcJS}/pages/article/app.model.page.cms.js" />	
+			<fileset file="${srcJS}/pages/article/app.controller.page.btmADBanner.js" />	
+			<fileset file="${srcJS}/pages/article/app.view.page.btmADBanner.js" />	
+
+			<!-- page search-->
+			<fileset file="${srcJS}/pages/search/app.controller.search.js" />	
+			<fileset file="${srcJS}/pages/search/app.controller.search.list.js" />	
+			<fileset file="${srcJS}/pages/search/app.controller.search.header.js" />	
+			<fileset file="${srcJS}/pages/search/app.view.search.js" />	
+			<fileset file="${srcJS}/pages/search/app.view.search.list.js" />	
+			<fileset file="${srcJS}/pages/search/app.view.search.header.js" />	
+			<fileset file="${srcJS}/pages/search/app.model.search.js" />	
+			<fileset file="${srcJS}/pages/search/app.model.search.list.js" />	
+			<fileset file="${srcJS}/pages/search/app.model.search.cms.js" />	
+			<fileset file="${srcJS}/pages/search/app.controller.search.topADBanner.js" />	
+			<fileset file="${srcJS}/pages/search/app.view.search.topADBanner.js" />	
+
+			<!-- page product-->
+			<fileset file="${srcJS}/pages/product/app.controller.product.js" />	
+			<fileset file="${srcJS}/pages/product/app.controller.product.header.js" />	
+			<fileset file="${srcJS}/pages/product/app.controller.product.list.js" />	
+			<fileset file="${srcJS}/pages/product/app.view.product.js" />	
+			<fileset file="${srcJS}/pages/product/app.view.product.header.js" />	
+			<fileset file="${srcJS}/pages/product/app.view.product.list.js" />	
+			 
+			<!-- page feedback-->
+			<fileset file="${srcJS}/pages/feedback/app.controller.feedback.js" />	
+			<fileset file="${srcJS}/pages/feedback/app.controller.feedback.header.js" />	
+			<fileset file="${srcJS}/pages/feedback/app.controller.feedback.list.js" />	
+			<fileset file="${srcJS}/pages/feedback/app.view.feedback.js" />	
+			<fileset file="${srcJS}/pages/feedback/app.view.feedback.header.js" />	
+			<fileset file="${srcJS}/pages/feedback/app.view.feedback.list.js" />	
+
+			<!-- page searchbox-->
+			<fileset file="${srcJS}/pages/searchbox/app.controller.searchbox.js" />	
+			<fileset file="${srcJS}/pages/searchbox/app.view.searchbox.js" />	
+			<fileset file="${srcJS}/pages/searchbox/app.model.searchbox.js" />	
+			<fileset file="${srcJS}/pages/searchbox/app.controller.searchbox.header.js" />	
+			<fileset file="${srcJS}/pages/searchbox/app.view.searchbox.header.js" />	
+
+			<!-- page configure-->
+			<fileset file="${srcJS}/app.conf.js" />	
+			<fileset file="${srcJS}/app.init.js" />	
+
+		</concat>
+	</target>
+
+	<target name="concatIphoneCSS" description="合并iphoneCSS">
+			<concat destfile="${buildCSS}/iphone.css">
+					<!-- common-->
+					<fileset file="${srcCSS}/common.css" />	
+					
+					<!-- ui-->
+					<fileset file="${common}/ui/GMU-ui/css/dialog.css" />	
+					<fileset file="${common}/ui/GMU-ui/css/suggestion.css" />	
+					<fileset file="${common}/ui/GMU-ui/css/quickdelete.css" />	
+					<fileset file="${common}/ui/GMU-ui/css/vs_toolbar.css" />	
+					<fileset file="${common}/ui/GMU-ui/css/vs_more.css" />	
+					<fileset file="${common}/ui/VS-ui/css/productlist.css" />	
+					<fileset file="${common}/ui/VS-ui/css/pageloading.css" />	
+				
+					<!-- index-->
+					<fileset file="${srcCSS}/index.css" />	
+
+					<!-- page-->
+					<fileset file="${srcCSS}/page.css" />	
+					
+					<!-- search-->
+					<fileset file="${srcCSS}/search.css" />	
+
+
+					<!-- product-->
+					<fileset file="${srcCSS}/product.css" />	
+
+					<!-- feedback-->
+					<fileset file="${srcCSS}/feedback.css" />	
+
+					<!-- searchbox-->
+					<fileset file="${srcCSS}/searchbox.css" />	
+
+				
+				
+				
+			</concat>
+	</target>
+
+</project>

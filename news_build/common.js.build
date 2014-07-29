@@ -1,0 +1,14 @@
+;/*{include file="../common/base/zepto.js"}*/
+;/*{include file="../common/base/underscore.js"}*/
+;/*{include file="../common/base/backbone.js"}*/
+;/*{include file="../common/base/iscroll.js"}*/
+;/*{include file="../common/ui/GMU_all.js"}*/
+;/*{include file="../common/ui/GMU-ui/plugin/vs_toolbar.js"}*/
+;/*{include file="../common/ui/GMU-ui/plugin/vs_quickdelete.js"}*/
+;/*{include file="../common/ui/GMU-ui/plugin/vs_suggestion.js"}*/;
+;/*{include file="../common/ui/GMU-ui/plugin/navigator.js"}*/
+;/*{include file="../common/ui/VS-ui/js/touchScroll.js"}*/
+;/*{include file="../common/ui/VS-ui/js/zepto.localstorage.js"}*/
+;/*{include file="../common/ui/VS-ui/js/productlist.js"}*/
+;/*{include file="../common/ui/GMU-ui/extend/zepto.extend.js"}*/
+;/*{include file="../common/ui/GMU-ui/extend/zepto.imglazyload.js"}*/

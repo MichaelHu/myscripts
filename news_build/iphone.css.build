@@ -1,0 +1,27 @@
+/*common*/
+/*{include file="../product/css/common.css"}*/
+
+/*ui*/
+/*{include file="../product/css/ui.css"}*/
+
+/*index*/
+/*{include file="../product/css/index.css"}*/
+
+/*page*/
+/*{include file="../product/css/page.css"}*/
+
+/*search*/
+/*{include file="../product/css/search.css"}*/
+
+/*product*/
+/*{include file="../product/css/product.css"}*/
+
+/*feedback*/
+/*{include file="../product/css/feedback.css"}*/
+
+/*searchbox*/
+/*{include file="../product/css/searchbox.css"}*/
+
+/*image*/
+/*{include file="../product/css/image.css"}*/
+

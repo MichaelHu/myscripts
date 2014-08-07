@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TMPFILE=$1.__tmp__
-MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview/markdown.out
+MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview/unix/markdown
 ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview
 TPL=tpl
 

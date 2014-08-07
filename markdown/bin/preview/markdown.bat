@@ -1,7 +1,7 @@
 setlocal
 
 set TMPFILE=%1.__tmp__
-set MARKDOWNCMD=C:\markdown_preview\markdown.exe
+set MARKDOWNCMD=C:\markdown_preview\win\markdown.exe
 set ROOT=C:\markdown_preview
 
 type %1 %ROOT%\file_empty_line > %TMPFILE%

@@ -25,6 +25,10 @@ find . -type f \
     -or -regex "\..*\.text" \) \
     -exec sh $ROOT/bin/build-markdown.sh {} \;
 
+find . -type f \
+    -regex "\..*\.slides" \
+    -exec sh $ROOT/bin/build-slides.sh {} \;
+
 find . -type f -regex "\..*\.html" \
     | sed -E 's/^.+$/<a href="&" target="_blank">&<\/a><br>/g' \
     | cat ./markdown_res/header.tpl.html - ./markdown_res/footer.tpl.html  \

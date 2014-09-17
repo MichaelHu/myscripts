@@ -5,10 +5,10 @@ set SRCDIR=
 set PREVIEWFILE=%1.preview.html
 set MARKDOWNCMD=C:\slides\win\markdown.exe
 set ROOT=C:\slides
-set REVEAL=
+set REVEAL=_reveal
 
 for /f %%i in ("%TMPFILE%") do set SRCDIR=%%~pi
-if "%2" == "reveal" set REVEAL="_reveal"
+if "%2" == "noreveal" set REVEAL=""
 
 rem echo !SRCDIR!
 rem echo !REVEAL!

@@ -7,10 +7,10 @@ MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/slides/mac/ma
 ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/slides
 TPL=tpl
 
-REVEAL=""
+REVEAL="_reveal"
 
-if [ "$2" == "reveal" ]; then
-    REVEAL="_reveal"
+if [ "$2" == "noreveal" ]; then
+    REVEAL=""
 fi
 
 cat "$1" "$ROOT/file_empty_line" > "$TMPFILE"

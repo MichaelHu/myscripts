@@ -1,18 +1,24 @@
 #!/bin/bash
 
 TMPFILE=$1.__tmp__
-MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview/unix/markdown
-ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview
+SRCDIR=`dirname $1`
+PREVIEWFILE=$1.preview.html
+MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/slides/mac/markdown
+ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/slides
 TPL=tpl
 
-if [ "$2" == "local" ]; then
-    TPL=tpl_local
+REVEAL=""
+
+if [ "$2" == "reveal" ]; then
+    REVEAL="_reveal"
 fi
 
 cat "$1" "$ROOT/file_empty_line" > "$TMPFILE"
 
-$MARKDOWNCMD "$TMPFILE" | cat "$ROOT/$TPL/header.tpl.html" - "$ROOT/$TPL/footer.tpl.html" \
-    > "$ROOT/tmp/preview.html" \
-    && open "$ROOT/tmp/preview.html"
+$MARKDOWNCMD "$TMPFILE" | cat "$ROOT/$TPL/header${REVEAL}.tpl.html" - "$ROOT/$TPL/footer${REVEAL}.tpl.html" \
+    > "$PREVIEWFILE" \
+    && mkdir -p $SRCDIR/lib \
+    && cp -r $ROOT/lib/* $SRCDIR/lib \
+    && open "$PREVIEWFILE"
 
 rm "$TMPFILE"

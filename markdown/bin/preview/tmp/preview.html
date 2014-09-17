@@ -8,6 +8,9 @@
     <style type="text/css">
         img {max-width: 100%; }
         pre, code {color: #048ebd; }
+        li>p {display: block;}
+        p>code, li>code {font-size: 13px; color: red;}
+        blockquote {display:block; border-left: 4px solid #abc; margin: 30px 0; padding: 11px 20px 1px;}
     </style>
     <script type="text/javascript" src="http://db-news-fe2.vm.baidu.com:8520/docs/markdown_res/js/jquery-1.9.1.js"></script>
 </head>
@@ -16,83 +19,189 @@
 <a href="http://db-news-fe2.vm.baidu.com:8520/docs/index.md.html">首页</a>
     </div>
 
-<h1> 如何提交和维护自己的文档</h1>
-<h2> 一、文档编写及存放</h2>
-<h3> 1.1 文档后缀 </h3>
-<p>文档使用<code>markdown语法</code>编写，建议保存成<code>.md</code>后缀的文本文件，文件编码统一为<code>UTF-8</code>。</p>
-<h3> 1.2 文档保存和WEB访问</h3>
-<p>文档保存在svn服务器上，每个同学有一个用自己名字命名的子目录，在这个子目录下，你可以随意存放你的文档。</p>
-<ol><li>svn服务器地址：<code>http://db-news-fe2.vm.baidu.com:8520/svn/newsdocs</code></li>
-<li>文档WEB访问地址： <code>http://db-news-fe2.vm.baidu.com:8520/docs/USERNAME/DIR/TO/DOC/FILE.html</code></li></ol>
-<h2> 二、创建、编写和提交文档</h2>
-<p>以下举例说明，如何创建、编写以及提交文档：</p>
-<ol><li>checkout出属于自己的文档根目录至本地，以<code>hudamin为例</code>：<pre><code>svn co http://db-news-fe2.vm.baidu.com:8520/svn/newsdocs/hudamin</code></pre>
-</li>
-<li>进入根目录，建立并进入子目录<pre><code>cd hudamin
-mkdir test
-cd test</code></pre>
-</li>
-<li>添加新文档<pre><code>> vim test-howto.md</code></pre>
-</li>
-<li>编辑内容，在文件中添加以下内容：<pre><code># 这里是文章大标题
-这里是引言
-## 一、第一部分
-第一部分内容
-    code
-    $('body').css('background', '#000');
-## 二、第二部分
-* 无序列表
-* 无序列表
-    1. 嵌套有序列表
-            inner code
-            console.log('hello');
-    2. 嵌套有序列表
+<p>% Guide to BSTR and C String Conversions
+% hudamin 
+% 2011-07-26</p>
+<h2> Introduction</h2>
+<p>One of the confusing aspects of Windows programming is managing the conversion of Visual Basic style strings to/from C language style strings.  It isn't that it is so difficult, it is just difficult to remember the details, it is usually not done often, the MSDN documentation so voluminous that it is difficult to find answers to your questions.  But the worst part is that you could perform some typecast that compiles fine, but doesn't work the way you expect.  This results code that doesn't work, and the bugs are hard to track down.  After some experience, you learn to make sure your string conversions are doing what you expect.</p>
+<p>C strings are arrays of characters terminated by a NULL character.  Visual Basic strings differ in that the length of the string preceded the characters in the string.  So a VB string knows it's own length.  In addition, all VB strings are Unicode (16 bits per character).</p>
+<h2> String Types</h2>
+<p>BSTR/C String conversions are required if:</p>
+<ul><li>You are doing COM programming in C/C++</li>
+<li>You are writing multiple language applications, such as C++ DLL's accessed by Visual Basic applications. </li></ul>
+<h3> C Language String Types and Classes</h3>
+<p>This article deals with the following C/MFC/ATL string types:</p>
+<ul><li>char/wchar/TCHAR -- The C strings for ANSI and Unicode</li>
+<li>CString -- The C++/MFC class wrapper for C strings</li>
+<li>BSTR -- The Visual Basic string type</li>
+<li>_bstr_t -- A C++ class wrapper for the Visual Basic string type</li>
+<li>CComBSTR -- Yet another C++ class wrapper for the Visual Basic string type used predominately in ATL code</li></ul>
+<h3> Demo Project</h3>
+<p>The demo project is just an MFC dialog based application with buttons for each type of conversion.  It is built using VC++ 6.0.  It uses a couple of support functions you may find helpful:</p>
+<pre><code>:::cpp
+BSTR GetBSTR()
+{
+    _bstr_t bstr1(_T("This is the test string."));
 </code></pre>
-</li>
-<li>退出，预览效果：<pre><code>markdown_preview test-howto.md</code></pre>
-<p>预期的效果应该如下所示：</p>
-<p><img src="/docs/hudamin/test/img/capture-test-howto.png"> </p>
-</li>
-<li>如不符合预期，再行修改。如果符合预期，进入下一步。</li>
-<li>提交文档：<pre><code>svn add test-howto.md
-svn ci -m "initial commit: add test-howto.md, by hudamin"</code></pre>
-</li>
-<li>WEB访问，在浏览器中键入<p><code>http://db-news-fe2.vm.baidu.com:8520/docs/hudamin/test/test-howto.md.html</code>
-，不出意外的话，可以看到第5点看到的效果图。</p>
-</li></ol>
-<h2> 三、一些约定</h2>
-<ol><li>每个同学尽量<code>在自己的目录下进行操作</code>，避免多人同时修改，造成版本冲突</li>
-<li>提交文档时，<code>必须带操作说明</code>，说明格式如下：<pre><code>initial commit, by hudamin</code></pre>
-<ul><li>格式为：操作内容的说明，接上提交人</li>
-<li>尽可能使用英文</li></ul>
-</li>
-<li>文档名称、目录名称<code>不要使用中文</code>，也<code>不要带空格</code></li></ol>
-<h2> 四、本地预览</h2>
-<p>为了避免必须通过svn提交以后才能查看最终效果，提高编写代码的效率，
-可以通过下载以下工具包，并在本地部署好。就可以通过预览功能，<code>先预览无误以后，再行提交</code>。</p>
-<ul><li><code>下载地址</code>：<a href="/docs/hudamin/markdown/download/markdown_preview.tar.gz">markdown_preview_tar.gz[<code>2014-08-07更新版</code>]</a></li>
-<li><code>部署以及使用方法</code>：<ol><li><code>Windows</code>：<ol><li>下载以后解包至<code>C:\markdown_preview</code></li>
-<li>将<code>C:\markdown_preview\markdown.bat</code>拷贝至<code>C:\WINDOWS\system32</code></li>
-<li>使用方式：<pre><code>markdown.bat FILENAME </code></pre>
-</li>
-<li>按以上方式解包，即可正常使用。如果需要自己更换目录，则需要修改<code>markdown.bat</code>中对应路径参数。<p>如果不熟悉<code>bat文件</code>，则不建议修改，而使用默认部署</p>
-</li></ol>
-</li>
-<li><code>Mac</code>:<ol><li>下载以后解包至某一本地目录，例如<code>DIR/markdown_preview</code> </li>
-<li>修改<code>DIR/markdown_previw/markdown.sh</code>，将<pre><code>MARKDOWNCMD=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview/markdown.out
-ROOT=/Users/hudamin/projects/git/git-myscripts/markdown/bin/preview</code></pre>
-<p>修改成：</p>
-<pre><code>MARKDOWNCMD=DIR/markdown_preview/markdown.out
-ROOT=DIR/markdown_preview</code></pre>
-</li>
-<li>将<code>DIR/markdown_preview/markdown.sh</code>拷贝成<code>~/bin/markdown</code></li>
-<li>设置<code>可执行权限</code><pre><code>chmod +x markdown</code></pre>
-</li>
-<li>使用方式：<pre><code>markdown FILENAME </code></pre>
-</li></ol>
-</li></ol>
-</li></ul>
-<p>祝您用餐愉快</p>
+<p>So let's get to it.  Here are the conversion techniques:</p>
+<h3> Converting BSTR to _bstr_t</h3>
+<pre><code>:::cpp
+// BSTR to _bst_t
+
+BSTR bstrStart = GetBSTR();
+
+// use the constructor
+_bstr_t bstrFinal(bstrStart);
+
+ShowBSTR(bstrFinal);
+
+// Use the = operator
+bstrFinal = bstrStart;
+
+ShowBSTR(bstrFinal);
+
+</code></pre>
+<h3> Converting a _bstr_t to BSTR</h3>
+<p>You may want to get a BSTR from a _bstr_t class.</p>
+<pre><code>:::cpp
+// _bstr_t to BSTR
+
+_bstr_t bstrStart(_T("This is the test string."));
+
+BSTR bstrFinish;
+
+// use _bstr_t::copy member function
+bstrFinish = bstrStart.copy();
+
+ShowBSTR(bstrFinish);
+
+// use = operator
+bstrFinish = bstrStart;
+
+ShowBSTR(bstrFinish);
+
+</code></pre>
+<h3> Converting a CComBSTR to BSTR</h3>
+<p>You may want to get a BSTR from a CComBSTR class.</p>
+<pre><code>:::cpp
+// CComBSTR to BSTR
+CComBSTR bstrStart(_T("This is the test string."));
+
+BSTR bstrFinish;
+
+// use the = operator
+bstrFinish = bstrStart;
+
+ShowBSTR(bstrFinish);
+
+// use the Copy member function
+bstrFinish = bstrStart.Copy();
+
+ShowBSTR(bstrFinish);
+</code></pre>
+<h3> Converting _bstr_t to CComBSTR</h3>
+<pre><code>:::cpp
+// _bstr_t to CComBSTR
+_bstr_t bstrStart(_T("This is the test string."));
+
+CComBSTR bstrFinish;  
+
+bstrFinish.AppendBSTR(bstrStart);
+
+ShowBSTR(bstrFinish);
+</code></pre>
+<h3> Converting BSTR to C String</h3>
+<p>*(Note :-  conversion that only works in Unicode)*</p>
+<pre><code>:::cpp
+// BSTR to C String
+
+BSTR bstrStart;
+
+bstrStart = GetBSTR();
+
+TCHAR szFinal[255];
+
+// direct conversion from BSTR to LPCTSTR only works in Unicode
+_stprintf(szFinal, _T("%s"), (LPCTSTR)bstrStart);
+AfxMessageBox(szFinal);
+
+_bstr_t bstrIntermediate(bstrStart); // convert to _bstr_t
+CString strFinal;
+
+// you have to go through _bstr_t to have it work in ANSI and Unicode    
+_stprintf(szFinal, _T("%s"), (LPCTSTR)bstrIntermediate);
+
+// Or using MFC
+
+strFinal.Format(_T("%s"), (LPCTSTR)bstrIntermediate);
+
+AfxMessageBox(strFinal);
+</code></pre>
+<h3> Converting _bstr_t to C String</h3>
+<p>*(this works in both ANSI and Unicode)*</p>
+<pre><code>:::cpp
+_bstr_t bstrStart(_T("This is the test string.")); 
+TCHAR szFinal[255];
+
+_stprintf(szFinal, _T("%s"), (LPCTSTR)bstrStart);
+
+AfxMessageBox(szFinal);
+
+</code></pre>
+<h3> Converting CComBSTR to LPCTSTR</h3>
+<p>*(not possible, must go through _bstr_t )*</p>
+<pre><code>:::cpp
+// CComBSTR to C String
+CComBSTR bstrStart("This is the test string.");
+
+_bstr_t bstrIntermediate(bstrStart);
+
+TCHAR szFinal[255];
+
+_stprintf(szFinal, _T("%s"), (LPCTSTR)bstrIntermediate);
+
+AfxMessageBox(szFinal);
+</code></pre>
+<h3> Converting LPCTSTR to _bstr_t</h3>
+<p>*(Use a constructor or = operator)*</p>
+<pre><code>:::cpp
+// LPCTSTR to _bstr_t
+
+LPCTSTR szStart = _T("This is the text string");
+
+// Use the constructor
+_bstr_t bstrFinal(szStart);
+
+ShowBSTR(bstrFinal);
+
+// or use = operator
+bstrFinal = szStart;
+
+ShowBSTR(bstrFinal);
+</code></pre>
+<h3> Converting LPCTSTR to CComBSTR</h3>
+<p>*Use a constructor or CComBSTR::Append function*</p>
+<pre><code>:::cpp
+// LPCTSTR to CComBSTR
+
+// Use a constructor    
+
+LPCTSTR szStart = _T("This is the text string");
+
+// Use the constructor
+CComBSTR bstrFinal(szStart);
+
+ShowBSTR(bstrFinal);
+
+// Or use the Append function
+bstrFinal.Empty();
+bstrFinal.Append(szStart);
+
+ShowBSTR(bstrFinal);
+</code></pre>
+<h2> Conclusion</h2>
+<p>Well I tested all of the conversion in the demo project.  If you need to try others, download the demo for easy modification.  I am sure I will hear if there are any mistakes!</p>
+
 
 </body>
 </html>

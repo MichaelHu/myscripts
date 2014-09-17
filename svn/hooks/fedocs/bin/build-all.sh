@@ -21,11 +21,11 @@ find __tmp -type d -name ".svn" -exec rm -rf {} \;
 
 pushd __tmp
 
-for i in `cat $CHANGEDFILE | grep -P '\.md$' | awk '{printf "%s",$2}'`; do
+for i in `cat $CHANGEDFILE | grep -P '\.md$' | awk '{printf "%s\n",$2}'`; do
     /bin/bash $ROOT/bin/build-markdown.sh $i
 done
 
-for i in `cat $CHANGEDFILE | grep -P '\.slides$' | awk '{printf "%s",$2}'`; do
+for i in `cat $CHANGEDFILE | grep -P '\.slides$' | awk '{printf "%s\n",$2}'`; do
     /bin/bash $ROOT/bin/build-slides.sh $i
 done
 

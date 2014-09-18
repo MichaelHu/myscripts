@@ -1,3 +1,4 @@
+@echo off
 setlocal enabledelayedexpansion
 
 set TMPFILE=%1.__tmp__
@@ -17,10 +18,11 @@ type %1 %ROOT%\file_empty_line > %TMPFILE%
 
 %MARKDOWNCMD% "%TMPFILE%" > "%ROOT%\tmp\__tmp__.md.html" 
 type "%ROOT%\tpl\header!REVEAL!.tpl.html" "%ROOT%\tmp\__tmp__.md.html" "%ROOT%\tpl\footer!REVEAL!.tpl.html" > "%PREVIEWFILE%" 
-mkdir !SRCDIR!\lib
-xcopy /e /y /q %ROOT%\lib !SRCDIR!\lib
+mkdir "!SRCDIR!\lib"
+xcopy /e /y /q "%ROOT%\lib" "!SRCDIR!\lib"
 rem must no double-quotes
 start %PREVIEWFILE%
 
-del %TMPFILE%
+del "%TMPFILE%"
 endlocal
+@echo on

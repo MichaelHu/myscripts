@@ -38,6 +38,8 @@ set foldlevel=10
 
 
 " 2.1 NERDTree
+" ------------------------------------------
+
 " https://github.com/scrooloose/nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
@@ -49,28 +51,34 @@ let NERDTreeWinSize=45
 
 
 " 2.2 Tlist
+" ------------------------------------------
+
 " map <F8> <Esc>:TlistToggle<CR>
 
 
 
 
 " 2.3 Syntastic
+" ------------------------------------------
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
-let g:syntastic_enable_javascript_checker = 1
+" default disabled, use `:SyntasticCheck jslint` instead
+" let g:syntastic_enable_javascript_checker = 1
 " ['closurecompiler', 'eslint', 'flow', 'gjslint', 'jscs', 'jshint', 'jsl', 'jslint', 'jsxhint', 'standard']
 " standard: no extra semicolon
 " jshint: need semicolon
 "
 " let g:syntastic_javascript_jslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
 let g:syntastic_javascript_checkers = [ 'jslint' ]
+map <F9> :SyntasticToggleMode<CR>
 
 
 

@@ -5,5 +5,5 @@
 HOME=/Users/hudamin
 
 ./mysql_install_db \
-    --basedir=$HOME/softwares/mysql-5.6.13-osx10.7-x86_64/ \
+    --basedir=$HOME/softwares/mysql-5.6.24-osx10.8-x86_64/ \
     --datadir=$HOME/mysql_data/

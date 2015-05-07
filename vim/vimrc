@@ -27,7 +27,9 @@ set foldmethod=marker
 set foldmarker={,}
 set foldlevel=10
 
-
+" show line number, column number, percentage, and full path of current file, truncated
+" when too long
+set statusline+=[\ %l:%c(%p%%)\ ]%<[\ %F\ ]
 
 
 
@@ -45,7 +47,7 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
 " autocmd vimenter * NERDTree | :wincmd l
 map <F7> <Esc>:NERDTreeToggle<CR>
-let NERDTreeWinSize=45
+let NERDTreeWinSize=36
 
 
 
@@ -61,14 +63,21 @@ let NERDTreeWinSize=45
 " 2.3 Syntastic
 " ------------------------------------------
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+
+" passive mode, only activated by command line command `:Syntasticcheck`
+let g:syntastic_mode_map = { 
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] 
+    \ }
 
 " default disabled, use `:SyntasticCheck jslint` instead
 " let g:syntastic_enable_javascript_checker = 1

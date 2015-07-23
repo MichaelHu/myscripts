@@ -4,7 +4,7 @@
 ROOT=/home/work/hudamin/fedocs
 DOCDIR=$ROOT/docs
 
-SVNCMD=/home/work/softwares/svn/svn_server/subversion-1.6.15/bin/svn
+SVNCMD=/usr/bin/svn
 
 CHANGEDFILE=$1
 

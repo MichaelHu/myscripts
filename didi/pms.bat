@@ -24,13 +24,15 @@ for /f "tokens=2" %%i in (%tmpfile%) do set CURREVISION=%%i
 rem Trim last space
 set REPOPATH=%REPOPATH:~0,-1%
 
+rem cat !CHANGELISTFILE!
+
 rem type %CHANGELISTFILE%
 
 rem Grep items and remove duplicated items
 for /f "tokens=2" %%i in (!CHANGELISTFILE!) do (
     if not "!LAST!"=="%%i" (
         if not "!LAST!"=="" (
-            echo %REPOPATH%/!LAST! %CURREVISION%
+            echo %REPOPATH%/%%i %CURREVISION%
         )
     )
     set LAST=%%i

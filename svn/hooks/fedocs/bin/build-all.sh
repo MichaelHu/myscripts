@@ -10,6 +10,10 @@ CHANGEDFILE=$1
 
 cd $ROOT
 
+# fix svn up error
+# `svn: Can't convert string from 'UTF-8' to native encoding`
+export LANG=zh_CN.UTF-8
+
 pushd $DOCDIR
 $SVNCMD up
 popd

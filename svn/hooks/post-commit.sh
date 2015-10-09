@@ -4,7 +4,7 @@ REPOS="$1"
 REV="$2"
 
 TIME=`date +%Y%m%d%H%M`
-LOGFILE="/home/work/hudamin/fedocs/bin/svn-hooks/log/commit-log.$TIME"
+LOGFILE="/home/work/hudamin/fedocs/bin/svn-hooks/log/commit-log.$TIME.txt"
 SVNLOOK="/home/work/svn/subversion-1.6.11/bin/svnlook"
 
 MAILSUBJECT="NEWSDOCS COMMIT MEMO ($TIME)"
@@ -32,7 +32,12 @@ echo "${SEPARATORS} BUILD MARKDOWN ${SEPARATORE}" >> $LOGFILE
 /bin/bash -x $BUILDCMD >> $LOGFILE 2>&1
 
 # send mail
-mail -s "$MAILSUBJECT" hudamin@baidu.com < $LOGFILE
+mail -s "$MAILSUBJECT" -a $LOGFILE hudamin@baidu.com <<EOF
 
+Build Successfully!
 
+LOGFILE: 
+    $LOGFILE
+
+EOF
 

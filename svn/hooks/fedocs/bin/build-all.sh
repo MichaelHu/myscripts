@@ -21,7 +21,7 @@ popd
 # rm -rf __tmp
 # mkdir __tmp
 cp -r $DOCDIR/* __tmp
-find __tmp -type d -name ".svn" -exec rm -rf {} \;
+find __tmp -type d -name ".svn" -exec rm -rf {} \; 2>/dev/null
 
 pushd __tmp
 

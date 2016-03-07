@@ -2,11 +2,11 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/css/github-markdown.css" />
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap.min.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/bootstrap/css/bootstrap-theme.min.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://258i.com/docs/markdown_res/css/github-markdown.css" media="all" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <style type="text/css">
+    <style type="text/css" media="all">
 
 img {max-width: 100%; }
 pre, code {color: #048ebd; }
@@ -23,6 +23,32 @@ ol ul{margin-left: 30px;}
     margin: 40px 0 0 180px;
     padding: 0 50px;
     overflow: auto;
+}
+
+@media print {
+    #navbar-auto {
+        display: none;
+    }
+
+    .markdown-body {
+        margin-left: 40px;
+        font-size: 12px;
+    }
+
+    .markdown-body blockquote {
+        color: #777 !important;
+        border: none;
+        border-left: 4px solid #ddd;
+        font-size: 12px;
+    }
+
+    .markdown-body blockquote * {
+        color: #777 !important;
+    }
+
+    .markdown-body code {
+        color: red !important;
+    }
 }
 
 #navbar-auto {

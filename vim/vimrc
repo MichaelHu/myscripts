@@ -6,6 +6,8 @@
 execute pathogen#infect()
 filetype plugin indent on
 
+" color theme
+colorscheme desert
 
 set nocompatible
 syntax on

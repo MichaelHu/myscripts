@@ -46,6 +46,14 @@ set title titlestring=%m%t titlelen=50
 set wrap fo=tcqmM
 
 
+" incsearch
+set incsearch
+
+" highlight search
+set hlsearch
+
+" abbreviations
+cab #s redi! > /tmp/files \| sil ls \| redi END \| !cat /tmp/files \| grep -E 
 
 
 

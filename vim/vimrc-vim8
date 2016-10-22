@@ -19,6 +19,7 @@ filetype plugin indent on
 colorscheme desert
 
 set nocompatible
+set backspace=indent,eol,start
 syntax on
 
 set fencs=utf-8,gb18030,gb2312,latin-1

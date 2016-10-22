@@ -3,12 +3,11 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-# export PS1='\u@\h:\W\$ '
-export PS1='\u@local:\W\$ '
+export PS1="\u@local \W $ "
 
 PATH=$PATH:~/bin
-PATH=$PATH:~/softwares/lrzsz-0.12.20/bin
-PATH=$PATH:/usr/local/share/npm/bin
+PATH=$PATH:~/softwares/mysql-5.6.24-osx10.8-x86_64/bin
+PATH=$PATH:~/softwares/mongodb/bin
+PATH=~/softwares/vim8/bin:$PATH
 
 export PATH
-

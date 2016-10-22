@@ -1,0 +1,204 @@
+" ===========================================
+" 1. Common Settings
+
+
+
+" ------------------------------------------
+" 1.1 Autoload Plugins
+
+" https://github.com/tpope/vim-pathogen
+" use ~/.vim/bundle/plugin-name
+execute pathogen#infect()
+filetype plugin indent on
+
+
+" ------------------------------------------
+" 1.2 Other Common Settings
+
+" color theme
+colorscheme desert
+
+set nocompatible
+syntax on
+
+set fencs=utf-8,gb18030,gb2312,latin-1
+set fenc=utf-8
+set enc=utf-8
+
+set nu
+set ts=4
+set sw=4
+set smarttab
+set expandtab
+set autoindent
+set cindent
+" set cursorline
+
+set foldmethod=marker
+set foldmarker={,}
+set foldlevel=10
+
+" show line number, column number, percentage, and full path of current file, truncated
+" when too long
+" set statusline+=[\ %l:%c(%p%%)\ ]%<[\ %F\ ]
+
+" show buffer number, percentage, line number, column number, ascii number, 
+" byte index under cursor, modified tag, and full file path
+set statusline=B%n\|%p%%\|L%l\|C%c\|0x%B\|b%o\|%m%<%F
+
+" title
+set title titlestring=%m%t titlelen=50
+
+" formatoptions[fo]: auto wrap text and comments with textwidth,
+" allow formatting comments with `gq`, allow wrapping multi-byte characters
+" and without inserting space when joining
+set wrap fo=tcqmM
+
+
+" incsearch
+set incsearch
+
+" highlight search
+set hlsearch
+
+" abbreviations
+cab #s redi! > /tmp/files \| sil ls \| redi END \| !cat /tmp/files \| grep -E 
+
+
+
+
+
+
+
+" ===========================================
+" 2. Plugins
+
+
+" 2.1 NERDTree
+" ------------------------------------------
+
+" https://github.com/scrooloose/nerdtree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
+" autocmd vimenter * NERDTree | :wincmd l
+map <F7> <Esc>:NERDTreeToggle<CR>
+let NERDTreeWinSize=36
+
+
+
+
+" 2.2 Tlist
+" ------------------------------------------
+
+" map <F8> <Esc>:TlistToggle<CR>
+
+
+
+
+" 2.3 Syntastic
+" ------------------------------------------
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+" passive mode, only activated by command line command `:Syntasticcheck`
+let g:syntastic_mode_map = { 
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] 
+    \ }
+
+" default disabled, use `:SyntasticCheck jslint` instead
+" let g:syntastic_enable_javascript_checker = 1
+" ['closurecompiler', 'eslint', 'flow', 'gjslint', 'jscs', 'jshint', 'jsl', 'jslint', 'jsxhint', 'standard']
+" standard: no extra semicolon
+" jshint: need semicolon
+"
+" let g:syntastic_javascript_jslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
+let g:syntastic_javascript_checkers = [ 'jslint' ]
+map <F9> :SyntasticToggleMode<CR>
+
+
+
+
+
+" 2.4 neocomplete
+" ------------------------------------------
+
+" Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'

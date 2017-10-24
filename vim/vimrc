@@ -1,10 +1,19 @@
 " ===========================================
 " 1. Common Settings
 
+
+
+" ------------------------------------------
+" 1.1 Autoload Plugins
+
 " https://github.com/tpope/vim-pathogen
 " use ~/.vim/bundle/plugin-name
 execute pathogen#infect()
 filetype plugin indent on
+
+
+" ------------------------------------------
+" 1.2 Other Common Settings
 
 " color theme
 colorscheme desert
@@ -52,8 +61,64 @@ set incsearch
 " highlight search
 set hlsearch
 
-" abbreviations
+
+
+
+" ------------------------------------------
+" 1.3 Abbreviations 
+
 cab #s redi! > /tmp/files \| sil ls \| redi END \| !cat /tmp/files \| grep -E 
+
+
+
+" ------------------------------------------
+" 1.4 Maps 
+
+let mapleader = ','
+
+" visual mode下，对选中文本进行查询，特别是中文查询，省去输入中文
+" 通过yank中转选中内容
+vmap <Leader>s "Zy:let @/ = @Z<CR>
+
+" visual mode下，对选中内容注释/去注释
+vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\1\/\/ \2/g<CR>:let @/ = ''<CR>
+vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
+
+" visual / normal / Select mode下，清空搜索条件
+map <Leader><Char-0x20> :let @/ = ''<CR>
+
+" normal mode下，获取当前buffer的全路径
+nmap <Leader>f :echo getcwd() . '/' . getreg( '%' )<CR>
+
+
+
+" ------------------------------------------
+" 1.5 Functions 
+
+" get lines from file, and append to the position after the cursor
+" @param {string} file      - absolute file path
+" @param {number} start     - the start line number
+" @param {number} count     - the count of lines to read in
+" @usage :call F_r( '/path/to/file', 5, 10 )
+fu F_r( file, start, count ) abort
+    let lines = readfile( a:file, '', 10000 )
+    let i = 0
+    let cur = line( '.' )
+    echo 'total lines: ' . len( lines ) 
+    for l:line in lines
+        let i += 1
+        if i >= a:start && i < a:start + a:count
+            " echo i . l:line
+            let failed = append( cur, l:line )
+            let cur += 1
+        endif
+        if i >= a:start + a:count
+            break
+        endif
+    endfor
+    echo 'read lines: ' . ( i - a:start ) 
+endfu
+
 
 
 

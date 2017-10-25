@@ -88,8 +88,14 @@ vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
 " visual / normal / Select mode下，清空搜索条件
 map <Leader><Char-0x20> :let @/ = ''<CR>
 
-" normal mode下，获取当前buffer的全路径
-nmap <Leader>f :echo getcwd() . '/' . getreg( '%' )<CR>
+" normal mode下，获取当前buffer的全路径，并复制到mac剪贴板
+nmap <Leader>f :call F_current_buffer_fullpath()<CR>
+
+" normal mode下，在资源管理器中打开当前目录
+nmap <Leader>o :call system( 'open `pwd`' )<CR>
+
+" normal mode下，读取文件指定行
+nmap <Leader>r :call F_r( '
 
 
 
@@ -119,6 +125,19 @@ fu F_r( file, start, count ) abort
     endfor
     echo 'read lines: ' . ( i - a:start ) 
 endfu
+
+
+" get the full path of current buffer, and put it into mac clipboard 
+" @usage :call F_current_buffer_fullpath()
+fu F_current_buffer_fullpath() abort
+    let curFile = getreg( '%' )
+    if match( curFile, "^/" ) != 0
+        let curFile = getcwd() . '/' . curFile
+    endif
+    echo 'Path: ' . curFile
+    call system( 'echo -n ' . curFile . ' | pbcopy' )
+endfu
+
 
 
 

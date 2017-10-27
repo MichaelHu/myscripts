@@ -97,6 +97,8 @@ nmap <Leader>o :call system( 'open `pwd`' )<CR>
 " normal mode下，读取文件指定行
 nmap <Leader>r :call F_r( '
 
+" visual mode下，将选中内容复制到mac剪贴板
+vmap <Leader>y "zy:call F_copy_selected_text()<CR>
 
 
 " ------------------------------------------
@@ -136,6 +138,18 @@ fu F_current_buffer_fullpath() abort
     endif
     echo 'Path: ' . curFile
     call system( 'echo -n ' . curFile . ' | pbcopy' )
+endfu
+
+
+" copy the selected text under visual mode into mac clipboard
+" @usage "zy:call F_copy_selected_text()
+fu F_copy_selected_text() abort
+    let text = getreg( 'z' )
+    let tmpFile = '/tmp/vim-selected-text'
+    let text = substitute( text, '\%x00', '\r', 'g' )
+    call writefile( [ text ], tmpFile, 'b' )
+    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    echo 'copy successfully'
 endfu
 
 

@@ -113,7 +113,8 @@ vmap <Leader>A "zy:call F_inc_copy_selected_text( 1 )<CR>
 " @param {number} count     - the count of lines to read in
 " @usage :call F_r( '/path/to/file', 5, 10 )
 fu F_r( file, start, count ) abort
-    let lines = readfile( a:file, '', 10000 )
+    " let lines = readfile( a:file, '', 10000 )
+    let lines = readfile( a:file )
     let i = 0
     let cur = line( '.' )
     echo 'total lines: ' . len( lines ) 

@@ -99,6 +99,10 @@ nmap <Leader>r :call F_r( '
 " visual mode下，将选中内容复制到mac剪贴板
 vmap <Leader>y "zy:call F_copy_selected_text()<CR>
 
+" visual mode下，将选中内容增量复制到mac剪贴板
+vmap <Leader>a "zy:call F_inc_copy_selected_text()<CR>
+vmap <Leader>A "zy:call F_inc_copy_selected_text( 1 )<CR>
+
 
 " ------------------------------------------
 " 1.5 Functions 
@@ -146,9 +150,35 @@ fu F_copy_selected_text() abort
     let text = getreg( 'z' )
     let tmpFile = '/tmp/vim-selected-text'
     let text = substitute( text, '\%x00', '\r', 'g' )
+    let lineCount = len( split( text, '\r', 1 ) )
+    " compute accurate linecount
+    if strridx( text, "\r" ) == strlen( text ) - 1
+        let lineCount = lineCount - 1
+    endif
     call writefile( [ text ], tmpFile, 'b' )
     call system( 'cat ' . tmpFile . ' | pbcopy' )
-    echo 'copy successfully'
+    echo 'copy ' . lineCount .' lines successfully'
+endfu
+
+
+" increment-copy selected text under visual mode into mac clipboard 
+" @usage "zy:call F_inc_copy_selected_text()
+fu F_inc_copy_selected_text( ... ) abort
+    let text = getreg( 'z' )
+    let tmpFile = '/tmp/vim-inc-selected-text'
+    let text = substitute( text, '\%x00', '\r', 'g' )
+    let lineCount = len( split( text, '\r', 1 ) )
+    " compute accurate linecount
+    if strridx( text, "\r" ) == strlen( text ) - 1
+        let lineCount = lineCount - 1
+    endif
+    let flag = 'a'
+    if a:0 > 0 && a:1 == 1
+        let flag = ''
+    endif
+    call writefile( [ text ], tmpFile, flag )
+    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    echo 'inc copy ' . lineCount .' lines successfully'
 endfu
 
 

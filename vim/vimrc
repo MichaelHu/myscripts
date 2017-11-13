@@ -81,6 +81,7 @@ let mapleader = ','
 vmap <Leader>s "zy:let @/ = @z<CR>
 
 " visual mode下，对选中内容注释/去注释
+vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\= submatch(1) . F_get_comment_label() . submatch(2)/g<CR>:let @/ = ''<CR>
 " vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
 vmap <Leader>C :call F_uncomment()<CR>
 
@@ -214,13 +215,18 @@ endfu
 
 " prefix line number for selected lines, like '<line number>. xxxx'
 fu F_prefix_line_number() range abort
-    let line = a:firstline
-    while line <= a:lastline 
-        let text = getline( line )
-        let text = substitute( text, '^[0-9]\+\. ', '', 'g' )
-        let text = substitute( text, '^[^ \t]', ( line - a:firstline + 1 ) . '. ', 'g' )
-        call setline( line, text )
-        let line = line + 1 
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '^[0-9]\+\. ', '', 'g' )
+        let need_substitute = match( new_text, '^[^ \t]' ) == 0
+        if need_substitute
+            let new_text = substitute( new_text, '^\([^ \t]\)', item_index . '. \1', 'g' )
+            call setline( cur_line, new_text )
+            let item_index += 1
+        endif
+        let cur_line += 1 
     endwhile
 endfu
 

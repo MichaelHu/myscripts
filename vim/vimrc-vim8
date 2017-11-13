@@ -82,8 +82,11 @@ let mapleader = ','
 vmap <Leader>s "zy:let @/ = @z<CR>
 
 " visual mode下，对选中内容注释/去注释
-vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\1\/\/ \2/g<CR>:let @/ = ''<CR>
-vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
+" vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
+vmap <Leader>C :call F_uncomment()<CR>
+
+" visual mode下，对选中内容增加行号，以`<line_number>. `方式放至行首
+vmap <Leader>l :call F_prefix_line_number()<CR>
 
 " visual / normal / Select mode下，清空搜索条件
 map <Leader><Char-0x20> :let @/ = ''<CR>
@@ -112,27 +115,52 @@ vmap <Leader>A "zy:call F_inc_copy_selected_text( 1 )<CR>
 
 " get lines from file, and append to the position after the cursor
 " @param {string} file      - absolute file path
-" @param {number} start     - the start line number
-" @param {number} count     - the count of lines to read in
-" @usage :call F_r( '/path/to/file', 5, 10 )
+" @param {number} start     - the start line number which starts from 1, it
+"                             can be negative
+" @param {number} count     - the count of lines to read in, '$' stands for
+"                             `total - start + 1`
+" @usage    :call F_r( '/path/to/file', 5, 10 )
+"           :call F_r( '/path/to/file', -30, 10 )
+"           :call F_r( '/path/to/file', 20, '$' )
+"           :call F_r( '/path/to/file', -5, '$' )
 fu F_r( file, start, count ) abort
     " let lines = readfile( a:file, '', 10000 )
     let lines = readfile( a:file )
-    let i = 0
-    let cur = line( '.' )
-    echo 'total lines: ' . len( lines ) 
+    let start_line = a:start
+    let line_count = a:count
+    let cur_read_line = 1
+    let cur_append_line = line( '.' )
+    let total = len( lines )
+    echo 'total lines: ' . total
+
+    " normalize start_line
+    " if start is negative, from the last `0 - start` line
+    if start_line < 0
+        let start_line = start_line % total
+        let start_line = total + start_line + 1
+    elseif start_line == 0
+        let start_line = 1
+    endif
+
+    " normalize line_count
+    if line_count == '$' || line_count > total - start_line + 1
+        let line_count = total - start_line + 1 
+    endif
+
+
+
     for l:line in lines
-        let i += 1
-        if i >= a:start && i < a:start + a:count
-            " echo i . l:line
-            let failed = append( cur, l:line )
-            let cur += 1
+        if cur_read_line >= start_line && cur_read_line < start_line + line_count
+            " echo cur_read_line . l:line
+            call append( cur_append_line, l:line )
+            let cur_append_line += 1
         endif
-        if i >= a:start + a:count
+        if cur_read_line >= start_line + line_count
             break
         endif
+        let cur_read_line += 1
     endfor
-    echo 'read lines: ' . ( i - a:start ) 
+    echo 'read lines: ' . ( cur_read_line - start_line ) 
 endfu
 
 
@@ -183,6 +211,45 @@ fu F_inc_copy_selected_text( ... ) abort
     call writefile( [ text ], tmpFile, flag )
     call system( 'cat ' . tmpFile . ' | pbcopy' )
     echo 'inc copy ' . lineCount .' lines successfully'
+endfu
+
+" prefix line number for selected lines, like '<line number>. xxxx'
+fu F_prefix_line_number() range abort
+    let line = a:firstline
+    while line <= a:lastline 
+        let text = getline( line )
+        let text = substitute( text, '^[0-9]\+\. ', '', 'g' )
+        let text = substitute( text, '^[^ \t]', ( line - a:firstline + 1 ) . '. ', 'g' )
+        call setline( line, text )
+        let line = line + 1 
+    endwhile
+endfu
+
+
+" get comment label according to filetype of current buffer
+fu F_get_comment_label() abort
+    " get filetype option
+    let filetype = &ft
+    if filetype == 'javascript' 
+        return '// '
+    elseif filetype == 'sh'
+        return '# '
+    elseif filetype == 'vim'
+        return '" '
+    else
+        return ''
+    endif
+endfu
+
+
+" uncomment according to filetype of current buffer
+fu F_uncomment() abort
+    let commentLabel = F_get_comment_label() 
+    let lineText = getline( '.' )
+    if match( lineText, '^[\t ]*' . commentLabel ) == 0 
+        let lineText = substitute( lineText, commentLabel, '', 'g' )
+        call setline( '.', lineText )
+    endif
 endfu
 
 

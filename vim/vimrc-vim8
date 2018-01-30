@@ -236,7 +236,7 @@ endfu
 fu F_get_comment_label() abort
     " get filetype option
     let filetype = &ft
-    if filetype == 'javascript' 
+    if filetype == 'javascript' || filetype == 'markdown'
         return '// '
     elseif filetype == 'sh'
         return '# '

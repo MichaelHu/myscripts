@@ -183,7 +183,7 @@ fu F_current_buffer_fullpath() abort
         let curFile = getcwd() . '/' . curFile
     endif
     echo 'Path: ' . curFile
-    call system( 'echo -n ' . curFile . ' | pbcopy' )
+    call system( 'echo -n ' . curFile . ' | clip' )
 endfu
 
 
@@ -199,7 +199,7 @@ fu F_copy_selected_text() abort
         let lineCount = lineCount - 1
     endif
     call writefile( [ text ], tmpFile, 'b' )
-    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    call system( 'cat ' . tmpFile . ' | clip' )
     echo 'copy ' . lineCount .' lines successfully'
 endfu
 
@@ -220,7 +220,7 @@ fu F_inc_copy_selected_text( ... ) abort
         let flag = ''
     endif
     call writefile( [ text ], tmpFile, flag )
-    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    call system( 'cat ' . tmpFile . ' | clip' )
     echo 'inc copy ' . lineCount .' lines successfully'
 endfu
 

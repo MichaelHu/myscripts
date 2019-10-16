@@ -88,6 +88,16 @@ vmap <Leader>C :call F_uncomment()<CR>
 " visual mode下，对选中内容增加行号，以`<line_number>. `方式放至行首
 vmap <Leader>l :call F_prefix_line_number()<CR>
 
+" visual mode下，对选中行的第一个非空白字符，增加前缀内容 '&#12288;'
+" 注意：替换内容的'&'是特殊字符，需要转义后选择其字面内容
+vmap <Leader>& :call F_prefix_lines( '\&#12288;' )<CR>
+
+" visual mode下，对选中行的第一个非空白字符，增加前缀内容 '*'
+vmap <Leader>* :call F_prefix_lines( '* ' )<CR>
+
+" visual mode下，对选中行增加后缀内容 '\\'
+vmap <Leader>\ :call F_postfix_lines( '\\' )<CR>
+
 " visual / normal / Select mode下，清空搜索条件
 map <Leader><Char-0x20> :let @/ = ''<CR>
 
@@ -230,6 +240,29 @@ fu F_prefix_line_number() range abort
     endwhile
 endfu
 
+" set prefix content for selected lines
+fu F_prefix_lines( content ) range abort
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '^\([ \t]*\)\([^ \t]\)', '\1' . a:content . '\2', '' )
+        call setline( cur_line, new_text )
+        let cur_line += 1 
+    endwhile
+endfu
+
+" set postfix content for selected lines
+fu F_postfix_lines( content ) range abort
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '$', a:content, '' )
+        call setline( cur_line, new_text )
+        let cur_line += 1 
+    endwhile
+endfu
 
 " get comment label according to filetype of current buffer
 fu F_get_comment_label() abort
@@ -268,7 +301,7 @@ endfu
 
 " https://github.com/scrooloose/nerdtree
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
+" autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
 " autocmd vimenter * NERDTree | :wincmd l
 map <F7> <Esc>:NERDTreeToggle<CR>
 let NERDTreeWinSize=36

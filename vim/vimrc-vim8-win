@@ -45,6 +45,7 @@ set foldlevel=10
 
 " show buffer number, percentage, line number, column number, ascii number, 
 " byte index under cursor, modified tag, and full file path
+set laststatus=2
 set statusline=B%n\|%p%%\|L%l\|C%c\|0x%B\|b%o\|%m%<%F
 
 " title
@@ -107,6 +108,9 @@ nmap <Leader>f :call F_current_buffer_fullpath()<CR>
 
 " normal mode下，在资源管理器中打开当前目录
 nmap <Leader>o :call system( 'open `pwd`' )<CR>
+
+" normal mode下，显示当前输入法名称
+nmap <Leader>i :call F_current_input_method()<CR>
 
 " normal mode下，读取文件指定行
 nmap <Leader>r :call F_r( '
@@ -304,6 +308,18 @@ fu F_uncomment() abort
     if match( lineText, '^[\t ]*' . commentLabel ) == 0 
         let lineText = substitute( lineText, commentLabel, '', 'g' )
         call setline( '.', lineText )
+    endif
+endfu
+
+
+" get the current input method
+" @usage :call F_current_input_method()
+fu F_current_input_method() abort
+    let im = systemlist( 'im-select' )
+    if len( im ) == 1
+        let imName = get( im, 0 ) 
+        echo 'Current Input Method: ' . imName 
+        return get( im, 0 )
     endif
 endfu
 

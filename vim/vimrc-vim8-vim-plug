@@ -16,9 +16,13 @@ call plug#begin('~/.vim/vim-plugs')
 Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdcommenter'
 
+" deoplete
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
+
+" indentLine
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 

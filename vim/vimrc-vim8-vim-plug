@@ -1,0 +1,449 @@
+" ===========================================
+" 1. Common Settings
+
+
+" ------------------------------------------
+" 1.1 Autoload Plugins
+
+" https://github.com/tpope/vim-pathogen
+" use ~/.vim/bundle/plugin-name
+" execute pathogen#infect()
+
+filetype plugin indent on
+
+call plug#begin('~/.vim/vim-plugs')
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdcommenter'
+
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+call plug#end()
+
+
+" ------------------------------------------
+" 1.2 Other Common Settings
+
+" color theme
+colorscheme desert
+
+set nocompatible
+set backspace=indent,eol,start
+syntax on
+
+set fencs=utf-8,gb18030,gb2312,latin-1
+set fenc=utf-8
+set enc=utf-8
+
+set nu
+set ts=4
+set sw=4
+set smarttab
+set expandtab
+set autoindent
+set cindent
+" set cursorline
+
+set foldmethod=marker
+set foldmarker={,}
+set foldlevel=10
+
+" show line number, column number, percentage, and full path of current file, truncated
+" when too long
+" set statusline+=[\ %l:%c(%p%%)\ ]%<[\ %F\ ]
+
+" show buffer number, percentage, line number, column number, ascii number, 
+" byte index under cursor, modified tag, and full file path
+set laststatus=2
+set statusline=B%n\|%p%%\|L%l\|C%c\|0x%B\|b%o\|%m%<%F
+
+" title
+set title titlestring=%m%t titlelen=50
+
+" formatoptions[fo]: auto wrap text and comments with textwidth,
+" allow formatting comments with `gq`, allow wrapping multi-byte characters
+" and without inserting space when joining
+set wrap fo=tcqmM
+
+
+" incsearch
+set incsearch
+
+" highlight search
+set hlsearch
+
+
+
+
+" ------------------------------------------
+" 1.3 Abbreviations 
+
+cab #s redi! > /tmp/files \| sil ls \| redi END \| !cat /tmp/files \| grep -E 
+
+
+
+" ------------------------------------------
+" 1.4 Maps 
+
+let mapleader = ','
+
+" visual mode下，对选中文本进行查询，特别是中文查询，省去输入中文
+" 通过yank中转选中内容
+vmap <Leader>s "zy:let @/ = @z<CR>
+
+" visual mode下，对选中内容注释/去注释，已使用nerdcommenter，此功能关闭
+" vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\= submatch(1) . F_get_comment_label() . submatch(2)/g<CR>:let @/ = ''<CR>
+" vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
+" vmap <Leader>C :call F_uncomment()<CR>
+
+" visual mode下，对选中内容增加行号，以`<line_number>. `方式放至行首
+vmap <Leader>l :call F_prefix_line_number()<CR>
+
+" visual mode下，对选中行的第一个非空白字符，增加前缀内容 '&#12288;'
+" 注意：替换内容的'&'是特殊字符，需要转义后选择其字面内容
+vmap <Leader>& :call F_prefix_lines( '\&#12288;' )<CR>
+
+" visual mode下，对选中行的第一个非空白字符，增加前缀内容 '*'
+vmap <Leader>* :call F_prefix_lines( '* ' )<CR>
+
+" visual mode下，对选中行增加后缀内容 '\\'
+vmap <Leader>\ :call F_postfix_lines( '\\' )<CR>
+
+" visual / normal / Select mode下，清空搜索条件
+map <Leader><Char-0x20> :let @/ = ''<CR>
+
+" normal mode下，获取当前buffer的全路径，并复制到mac剪贴板
+nmap <Leader>f :call F_current_buffer_fullpath()<CR>
+
+" normal mode下，在资源管理器中打开当前目录
+nmap <Leader>o :call system( 'open `pwd`' )<CR>
+
+" normal mode下，显示当前输入法名称
+nmap <Leader>i :call F_current_input_method()<CR>
+
+" normal mode下，读取文件指定行
+nmap <Leader>r :call F_r( '
+
+" visual mode下，将选中内容复制到mac剪贴板
+vmap <Leader>y "zy:call F_copy_selected_text()<CR>
+
+" visual mode下，将选中内容增量复制到mac剪贴板
+vmap <Leader>a "zy:call F_inc_copy_selected_text()<CR>
+vmap <Leader>A "zy:call F_inc_copy_selected_text( 1 )<CR>
+
+
+
+" ------------------------------------------
+" 1.5 Functions 
+
+" get lines from file, and append to the position after the cursor
+" @param {string} file      - absolute file path
+" @param {number} start     - the start line number which starts from 1, it
+"                             can be negative
+" @param {number} count     - the count of lines to read in, '$' stands for
+"                             `total - start + 1`
+" @usage    :call F_r( '/path/to/file', 5, 10 )
+"           :call F_r( '/path/to/file', -30, 10 )
+"           :call F_r( '/path/to/file', 20, '$' )
+"           :call F_r( '/path/to/file', -5, '$' )
+fu F_r( file, start, count ) abort
+    " let lines = readfile( a:file, '', 10000 )
+    let lines = readfile( a:file )
+    let start_line = a:start
+    let line_count = a:count
+    let cur_read_line = 1
+    let cur_append_line = line( '.' )
+    let total = len( lines )
+    echo 'total lines: ' . total
+
+    " normalize start_line
+    " if start is negative, from the last `0 - start` line
+    if start_line < 0
+        let start_line = start_line % total
+        let start_line = total + start_line + 1
+    elseif start_line == 0
+        let start_line = 1
+    endif
+
+    " normalize line_count
+    if line_count == '$' || line_count > total - start_line + 1
+        let line_count = total - start_line + 1 
+    endif
+
+
+
+    for l:line in lines
+        if cur_read_line >= start_line && cur_read_line < start_line + line_count
+            " echo cur_read_line . l:line
+            call append( cur_append_line, l:line )
+            let cur_append_line += 1
+        endif
+        if cur_read_line >= start_line + line_count
+            break
+        endif
+        let cur_read_line += 1
+    endfor
+    echo 'read lines: ' . ( cur_read_line - start_line ) 
+endfu
+
+
+" get the full path of current buffer, and put it into mac clipboard 
+" @usage :call F_current_buffer_fullpath()
+fu F_current_buffer_fullpath() abort
+    let curFile = getreg( '%' )
+    if match( curFile, "^/" ) != 0
+        let curFile = getcwd() . '/' . curFile
+    endif
+    echo 'Path: ' . curFile
+    call system( 'echo -n ' . curFile . ' | pbcopy' )
+endfu
+
+
+" copy the selected text under visual mode into mac clipboard
+" @usage "zy:call F_copy_selected_text()
+fu F_copy_selected_text() abort
+    let text = getreg( 'z' )
+    let tmpFile = '/tmp/vim-selected-text'
+    let list = split( text, '\%x00' )
+    let lineCount = len( list )
+
+    """""""""""""""""""""""""""""""""""""
+    " commented on 2020-02-10
+    """""""""""""""""""""""""""""""""""""
+    " let text = substitute( text, '\%x00', '\r', 'g' )
+    " let lineCount = len( split( text, '\r', 1 ) )
+    " " compute accurate linecount
+    " if strridx( text, "\r" ) == strlen( text ) - 1
+    "     let lineCount = lineCount - 1
+    " endif
+    " call writefile( [ text ], tmpFile, 'b' )
+ 
+    call writefile( list, tmpFile, 'b' )
+    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    echo 'copy ' . lineCount .' lines successfully'
+endfu
+
+
+" increment-copy selected text under visual mode into mac clipboard 
+" @usage "zy:call F_inc_copy_selected_text()
+fu F_inc_copy_selected_text( ... ) abort
+    let text = getreg( 'z' )
+    let tmpFile = '/tmp/vim-inc-selected-text'
+    let list = split( text, '\%x00' )
+    let lineCount = len( list )
+
+    """""""""""""""""""""""""""""""""""""
+    " commented on 2020-02-10
+    """""""""""""""""""""""""""""""""""""
+    " let text = substitute( text, '\%x00', '\r', 'g' )
+    " let lineCount = len( split( text, '\r', 1 ) )
+    " " compute accurate linecount
+    " if strridx( text, "\r" ) == strlen( text ) - 1
+    "     let lineCount = lineCount - 1
+    " endif
+
+    let flag = 'a'
+    if a:0 > 0 && a:1 == 1
+        let flag = ''
+    endif
+    " call writefile( [ text ], tmpFile, flag )
+    call writefile( list, tmpFile, flag )
+    call system( 'cat ' . tmpFile . ' | pbcopy' )
+    echo 'inc copy ' . lineCount .' lines successfully'
+endfu
+
+" prefix line number for selected lines, like '<line number>. xxxx'
+fu F_prefix_line_number() range abort
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '^[0-9]\+\. ', '', 'g' )
+        let need_substitute = match( new_text, '^[^ \t]' ) == 0
+        if need_substitute
+            let new_text = substitute( new_text, '^\([^ \t]\)', item_index . '. \1', 'g' )
+            call setline( cur_line, new_text )
+            let item_index += 1
+        endif
+        let cur_line += 1 
+    endwhile
+endfu
+
+" set prefix content for selected lines
+fu F_prefix_lines( content ) range abort
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '^\([ \t]*\)\([^ \t]\)', '\1' . a:content . '\2', '' )
+        call setline( cur_line, new_text )
+        let cur_line += 1 
+    endwhile
+endfu
+
+" set postfix content for selected lines
+fu F_postfix_lines( content ) range abort
+    let cur_line = a:firstline
+    let item_index = 1
+    while cur_line <= a:lastline 
+        let text = getline( cur_line )
+        let new_text = substitute( text, '$', a:content, '' )
+        call setline( cur_line, new_text )
+        let cur_line += 1 
+    endwhile
+endfu
+
+" get comment label according to filetype of current buffer
+fu F_get_comment_label() abort
+    " get filetype option
+    let filetype = &ft
+    if filetype == 'javascript' || filetype == 'markdown'
+        return '// '
+    elseif filetype == 'sh'
+        return '# '
+    elseif filetype == 'vim'
+        return '" '
+    else
+        return ''
+    endif
+endfu
+
+
+" uncomment according to filetype of current buffer
+fu F_uncomment() abort
+    let commentLabel = F_get_comment_label() 
+    let lineText = getline( '.' )
+    if match( lineText, '^[\t ]*' . commentLabel ) == 0 
+        let lineText = substitute( lineText, commentLabel, '', 'g' )
+        call setline( '.', lineText )
+    endif
+endfu
+
+
+" get the current input method
+" @usage :call F_current_input_method()
+fu F_current_input_method() abort
+    let im = systemlist( 'im-select' )
+    if len( im ) == 1
+        let imName = get( im, 0 ) 
+        echo 'Current Input Method: ' . imName 
+        return get( im, 0 )
+    endif
+endfu
+
+
+
+" ===========================================
+" 2. Plugins
+
+
+" 2.1 NERDTree
+" ------------------------------------------
+
+" https://github.com/scrooloose/nerdtree
+autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && !exists("s:std_in") | NERDTree | :wincmd l | endif
+" autocmd vimenter * NERDTree | :wincmd l
+map <F7> <Esc>:NERDTreeToggle<CR>
+let NERDTreeWinSize=36
+
+
+
+
+" 2.2 Tlist
+" ------------------------------------------
+
+" map <F8> <Esc>:TlistToggle<CR>
+
+
+
+
+" 2.3 Syntastic
+" ------------------------------------------
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+" passive mode, only activated by command line command `:Syntasticcheck`
+let g:syntastic_mode_map = { 
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] 
+    \ }
+
+" default disabled, use `:SyntasticCheck jslint` instead
+" let g:syntastic_enable_javascript_checker = 1
+" ['closurecompiler', 'eslint', 'flow', 'gjslint', 'jscs', 'jshint', 'jsl', 'jslint', 'jsxhint', 'standard']
+" standard: no extra semicolon
+" jshint: need semicolon
+"
+" let g:syntastic_javascript_jslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
+let g:syntastic_javascript_checkers = [ 'jslint' ]
+map <F9> :SyntasticToggleMode<CR>
+
+
+
+
+" 2.4 nerdcommenter
+" ------------------------------------------
+
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
+
+
+
+
+" 2.6 deoplete
+" ------------------------------------------
+
+" let g:python3_host_prog = '/usr/bin/python3'
+let g:deoplete#enable_at_startup = 1
+
+" select the first candidate and insert into current cursor. [会和tab键冲突，暂时不用]
+" inoremap <expr> <Tab> deoplete#insert_candidate(0)
+
+" call deoplete#enable()
+
+
+
+
+
+
+" ===========================================
+" 3. Other
+
+au BufNewFile,BufRead *.vue setf html
+
+
+

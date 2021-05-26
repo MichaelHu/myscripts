@@ -82,10 +82,10 @@ let mapleader = ','
 " 通过yank中转选中内容
 vmap <Leader>s "zy:let @/ = @z<CR>
 
-" visual mode下，对选中内容注释/去注释
-vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\= submatch(1) . F_get_comment_label() . submatch(2)/g<CR>:let @/ = ''<CR>
+" visual mode下，对选中内容注释/去注释，已使用nerdcommenter，此功能关闭
+" vmap <Leader>c :s/^\([ \t]*\)\(.*\)$/\= submatch(1) . F_get_comment_label() . submatch(2)/g<CR>:let @/ = ''<CR>
 " vmap <Leader>C :s/^\([ \t]*\)\/\/ \(.*\)$/\1\2/g<CR>:let @/ = ''<CR>
-vmap <Leader>C :call F_uncomment()<CR>
+" vmap <Leader>C :call F_uncomment()<CR>
 
 " visual mode下，对选中内容增加行号，以`<line_number>. `方式放至行首
 vmap <Leader>l :call F_prefix_line_number()<CR>
@@ -384,6 +384,7 @@ map <F9> :SyntasticToggleMode<CR>
 
 " 2.4 neocomplete
 " ------------------------------------------
+" neocomplete not support vim version above 8.2.1066, use deoplete instead
 
 " Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
@@ -460,12 +461,44 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
 
+" 2.5 nerdcommenter
+" ------------------------------------------
+
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
+
+
+
+
 
 " ===========================================
 " 3. Other
 
 au BufNewFile,BufRead *.vue setf html
-
 
 
 

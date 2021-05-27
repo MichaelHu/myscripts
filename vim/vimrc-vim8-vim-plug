@@ -23,6 +23,9 @@ Plug 'roxma/vim-hug-neovim-rpc'
 
 " indentLine
 Plug 'Yggdroot/indentLine'
+
+" vim-javascript
+Plug 'pangloss/vim-javascript'
 call plug#end()
 
 
@@ -438,6 +441,22 @@ let g:deoplete#enable_at_startup = 1
 " inoremap <expr> <Tab> deoplete#insert_candidate(0)
 
 " call deoplete#enable()
+
+
+
+
+
+" 2.7 indentLine
+" ------------------------------------------
+
+" let g:indentLine_char = '¦'
+
+
+
+
+
+" 2.8 vim-javascript
+" ------------------------------------------
 
 
 

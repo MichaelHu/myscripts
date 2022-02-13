@@ -14,12 +14,18 @@ filetype plugin indent on
 call plug#begin('~/.vim/vim-plugs')
 " Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdtree'
-Plug 'preservim/nerdcommenter'
+" Plug 'preservim/nerdcommenter'
+
+" commentary: gc, gcc
+Plug 'tpope/vim-commentary'
+
+" YouCompleteMe
+Plug 'ycm-core/YouCompleteMe'
 
 " deoplete
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
+" Plug 'Shougo/deoplete.nvim'
+" Plug 'roxma/nvim-yarp'
+" Plug 'roxma/vim-hug-neovim-rpc'
 
 " indentLine
 Plug 'Yggdroot/indentLine'
@@ -373,17 +379,17 @@ let NERDTreeWinSize=36
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
 
 " passive mode, only activated by command line command `:Syntasticcheck`
-let g:syntastic_mode_map = { 
-    \ "mode": "passive",
-    \ "active_filetypes": [],
-    \ "passive_filetypes": [] 
-    \ }
+" let g:syntastic_mode_map = { 
+"     \ "mode": "passive",
+"     \ "active_filetypes": [],
+"     \ "passive_filetypes": [] 
+"     \ }
 
 " default disabled, use `:SyntasticCheck jslint` instead
 " let g:syntastic_enable_javascript_checker = 1
@@ -392,8 +398,8 @@ let g:syntastic_mode_map = {
 " jshint: need semicolon
 "
 " let g:syntastic_javascript_jslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
-let g:syntastic_javascript_checkers = [ 'jslint' ]
-map <F9> :SyntasticToggleMode<CR>
+" let g:syntastic_javascript_checkers = [ 'jslint' ]
+" map <F9> :SyntasticToggleMode<CR>
 
 
 
@@ -401,32 +407,32 @@ map <F9> :SyntasticToggleMode<CR>
 " 2.4 nerdcommenter
 " ------------------------------------------
 
-" Create default mappings
-let g:NERDCreateDefaultMappings = 1
+" " Create default mappings
+" let g:NERDCreateDefaultMappings = 1
 
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
+" " Add spaces after comment delimiters by default
+" let g:NERDSpaceDelims = 1
 
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
+" " Use compact syntax for prettified multi-line comments
+" let g:NERDCompactSexyComs = 1
 
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
+" " Align line-wise comment delimiters flush left instead of following code indentation
+" let g:NERDDefaultAlign = 'left'
 
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
+" " Set a language to use its alternate delimiters by default
+" let g:NERDAltDelims_java = 1
 
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+" " Add your own custom formats or override the defaults
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
 
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
+" " Allow commenting and inverting empty lines (useful when commenting a region)
+" let g:NERDCommentEmptyLines = 1
 
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
+" " Enable trimming of trailing whitespace when uncommenting
+" let g:NERDTrimTrailingWhitespace = 1
 
-" Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1
+" " Enable NERDCommenterToggle to check all selected lines is commented or not
+" let g:NERDToggleCheckAllLines = 1
 
 
 
@@ -435,10 +441,14 @@ let g:NERDToggleCheckAllLines = 1
 " ------------------------------------------
 
 " let g:python3_host_prog = '/usr/bin/python3'
-let g:deoplete#enable_at_startup = 1
+
+" let g:deoplete#enable_at_startup = 1
 
 " select the first candidate and insert into current cursor. [会和tab键冲突，暂时不用]
 " inoremap <expr> <Tab> deoplete#insert_candidate(0)
+
+" https://github.com/Shougo/deoplete.nvim/issues/762
+" call deoplete#custom#option('num_processes', 1)
 
 " call deoplete#enable()
 
@@ -459,6 +469,53 @@ let g:deoplete#enable_at_startup = 1
 " ------------------------------------------
 
 
+
+
+" 2.9 vim-commentary
+" ------------------------------------------
+" commentary: gc, gcc
+
+
+
+" 2.10 ycm <https://github.com/ycm-core/YouCompleteMe#options>
+" ------------------------------------------
+"  some default options
+" let g:ycm_min_num_of_chars_for_completion = 2
+" let g:ycm_max_num_candidates = 50
+" let g:ycm_filetype_whitelist = {'*': 1}
+" let g:ycm_filetype_blacklist = {
+"       \ 'tagbar': 1,
+"       \ 'notes': 1,
+"       \ 'markdown': 1,
+"       \ 'netrw': 1,
+"       \ 'unite': 1,
+"       \ 'text': 1,
+"       \ 'vimwiki': 1,
+"       \ 'pandoc': 1,
+"       \ 'infolog': 1,
+"       \ 'leaderf': 1,
+"       \ 'mail': 1
+"       \}
+" let g:ycm_filepath_blacklist = {
+"       \ 'html': 1,
+"       \ 'jsx': 1,
+"       \ 'xml': 1,
+"       \}
+" let g:ycm_complete_in_strings = 1
+"
+" customized options
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar': 1,
+      \ 'notes': 1,
+      \ 'netrw': 1,
+      \ 'unite': 1,
+      \ 'text': 1,
+      \ 'vimwiki': 1,
+      \ 'pandoc': 1,
+      \ 'infolog': 1,
+      \ 'leaderf': 1,
+      \ 'mail': 1
+      \}
 
 
 

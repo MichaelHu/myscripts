@@ -23,4 +23,4 @@ find . -type f -not -name '.*' \
     | sort \
     | grep -E "^$cur_date" \
     | sed -e "s/$cur_year-.* \\././g" \
-    | xargs -I % echo cp '"%"' ./tmp 
+    | xargs -I % echo cp -p '"%"' ./tmp 

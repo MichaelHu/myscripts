@@ -5,7 +5,6 @@
 # 2、也可提供日期，收集特定日期创建的文件
 #       sh -x get-new-added-files.sh 2024-08-20
 
-cur_year=`date +%Y`
 cur_date=`date +%Y-%m-%d`
 
 if [ -n "$1" ]; then
@@ -14,13 +13,21 @@ fi
 
 rm -rf ./tmp/*
 
-find . -type f -not -name '.*' \
+item_num=10000
+find . -mindepth 2 \
+        -type f -not -name '.*' \
         -not -name 'all*.pdf' \
         -not -name '*.sh' \
         -not -regex '\./tmp/.*' \
-        -exec ls -lh -D '%Y-%m-%d %H:%M:%S' {} \; \
-    | sed 's/.* \(202[0-9]-\)/\1/g' \
+        -exec ls -lh -D '@%Y-%m-%d %H:%M:%S' {} \; \
+    | sed "s/.* @\\($cur_date\\)/\\1/g" \
     | sort \
     | grep -E "^$cur_date" \
-    | sed -e "s/$cur_year-.* \\././g" \
-    | xargs -I % echo cp -p '"%"' ./tmp 
+    | sed -e "s/$cur_date [^ ]\\{1,\\} \\././g" \
+    | xargs -I % echo cp -p '"%"' ./tmp/'"__@@_@@__%"' \
+    | while read line; do
+        ((item_num++))
+        echo "$line" \
+            | sed -e "s/__@@_@@__.*\\//$item_num-/g"
+    done
+
